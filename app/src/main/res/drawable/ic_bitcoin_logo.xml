@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="200"
+    android:viewportHeight="200">
+
+    <!-- Bitcoin circle -->
+    <path
+        android:fillColor="#F7931A"
+        android:pathData="M100,5 C152.47,5 195,47.53 195,100 C195,152.47 152.47,195 100,195 C47.53,195 5,152.47 5,100 C5,47.53 47.53,5 100,5z" />
+
+    <!-- B symbol - upper curve -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M80,55 L80,100 L108,100 C128,100 128,55 108,55 L80,55z M92,67 L105,67 C113,67 116,78 105,78 L92,78z" 
+        android:fillType="evenOdd" />
+
+    <!-- B symbol - lower curve (wider) -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M80,100 L80,148 L112,148 C134,148 134,100 112,100 L80,100z M92,112 L109,112 C118,112 121,125 118,131 C116,135 113,136 109,136 L92,136z"
+        android:fillType="evenOdd" />
+
+    <!-- Top vertical bars -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M90,42 L90,58 L96,58 L96,42z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M104,42 L104,58 L110,58 L110,42z" />
+
+    <!-- Bottom vertical bars -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M90,145 L90,161 L96,161 L96,145z" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M104,145 L104,161 L110,161 L110,145z" />
+</vector>

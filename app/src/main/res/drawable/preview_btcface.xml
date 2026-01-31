@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="400dp"
+    android:height="400dp"
+    android:viewportWidth="400"
+    android:viewportHeight="400">
+
+    <!-- Dark background -->
+    <path
+        android:fillColor="#0A0A12"
+        android:pathData="M0,0 L400,0 L400,400 L0,400z" />
+
+    <!-- Subtle circle outline -->
+    <path
+        android:strokeColor="#1A1A2E"
+        android:strokeWidth="2"
+        android:pathData="M200,15 A185,185,0,1,1,200,385 A185,185,0,1,1,200,15" />
+
+    <!-- Bitcoin logo placeholder (faded) -->
+    <path
+        android:fillColor="#1A1520"
+        android:pathData="M200,80 C266,80 320,134 320,200 C320,266 266,320 200,320 C134,320 80,266 80,200 C80,134 134,80 200,80z" />
+
+    <!-- Hour hand -->
+    <path
+        android:fillColor="#F7931A"
+        android:pathData="M197,200 L197,110 L203,110 L203,200z" />
+
+    <!-- Minute hand -->
+    <path
+        android:fillColor="#FFD700"
+        android:pathData="M198.5,200 L198.5,60 L201.5,60 L201.5,200z" />
+
+    <!-- Center dot -->
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M200,194 A6,6,0,1,1,200,206 A6,6,0,1,1,200,194z" />
+</vector>

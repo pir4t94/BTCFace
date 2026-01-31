@@ -1,0 +1,4 @@
+-keepattributes *Annotation*
+-keep class com.roklab.btcface.** { *; }
+-keep class androidx.wear.watchface.** { *; }
+-dontwarn kotlinx.coroutines.**
