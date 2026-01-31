@@ -169,15 +169,16 @@ class BTCCanvasRenderer(
     override fun renderHighlightLayer(
         canvas: Canvas, bounds: Rect, zonedDateTime: ZonedDateTime, sharedAssets: Assets
     ) {
-        canvas.drawColor(renderParameters.highlightLayer!!.backgroundTint)
+        val highlightLayer = renderParameters.highlightLayer ?: return
+        canvas.drawColor(highlightLayer.backgroundTint)
         for ((_, slot) in complicationSlotsManager.complicationSlots) {
             if (slot.enabled) {
-                slot.renderer.renderHighlightLayer(
+                slot.renderer.drawHighlight(
                     canvas,
                     slot.computeBounds(bounds),
+                    slot.boundsType,
                     zonedDateTime,
-                    renderParameters,
-                    slot.id
+                    highlightLayer.highlightTint
                 )
             }
         }
