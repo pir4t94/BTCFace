@@ -152,7 +152,7 @@ class BTCCanvasRenderer(
         drawBackground(canvas, cx, cy, r, ambient)
         drawBitcoinLogo(canvas, cx, cy, r, ambient)
         if (showMarkers) drawHourMarkers(canvas, cx, cy, r, ambient)
-        drawComplications(canvas, zonedDateTime)
+        drawComplications(canvas, bounds, zonedDateTime)
         if (showPrice && btcPrice > 0) drawPriceWindow(canvas, cx, cy, r, ambient)
 
         val hr = zonedDateTime.hour % 12
@@ -172,7 +172,13 @@ class BTCCanvasRenderer(
         canvas.drawColor(renderParameters.highlightLayer!!.backgroundTint)
         for ((_, slot) in complicationSlotsManager.complicationSlots) {
             if (slot.enabled) {
-                slot.renderer.renderHighlightLayer(canvas, bounds, zonedDateTime, renderParameters)
+                slot.renderer.renderHighlightLayer(
+                    canvas,
+                    slot.computeBounds(bounds),
+                    zonedDateTime,
+                    renderParameters,
+                    slot.id
+                )
             }
         }
     }
@@ -232,10 +238,16 @@ class BTCCanvasRenderer(
         }
     }
 
-    private fun drawComplications(canvas: Canvas, zonedDateTime: ZonedDateTime) {
+    private fun drawComplications(canvas: Canvas, screenBounds: Rect, zonedDateTime: ZonedDateTime) {
         for ((_, slot) in complicationSlotsManager.complicationSlots) {
             if (slot.enabled) {
-                slot.renderer.render(canvas, zonedDateTime, renderParameters)
+                slot.renderer.render(
+                    canvas,
+                    slot.computeBounds(screenBounds),
+                    zonedDateTime,
+                    renderParameters,
+                    slot.id
+                )
             }
         }
     }
