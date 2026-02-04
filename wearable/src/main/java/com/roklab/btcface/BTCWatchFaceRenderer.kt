@@ -303,7 +303,7 @@ class BTCWatchFaceRenderer(
     }
 
     private fun applyUserStyle(userStyle: UserStyle) {
-        val colorThemeId = userStyle["color_theme"].toString()
+        val colorThemeId = (userStyle["color_theme"] as? UserStyleSetting.Option)?.id?.value ?: "gold"
         when (colorThemeId) {
             "silver" -> {
                 primaryColor = Color.parseColor("#C0C0C0")
@@ -335,8 +335,10 @@ class BTCWatchFaceRenderer(
             }
         }
 
-        showSeconds = userStyle["show_seconds"].toString() != "false"
-        showPrice = userStyle["show_price"].toString() != "false"
+        val showSecondsValue = (userStyle["show_seconds"] as? Boolean) ?: true
+        val showPriceValue = (userStyle["show_price"] as? Boolean) ?: true
+        showSeconds = showSecondsValue
+        showPrice = showPriceValue
 
         // Update paint colors
         markerPaint.color = primaryColor
