@@ -35,37 +35,28 @@ class BTCWatchFaceService : WatchFaceService(), DataClient.OnDataChangedListener
     override fun createUserStyleSchema(): UserStyleSchema {
         val colorThemeSetting = UserStyleSetting.ListUserStyleSetting(
             UserStyleSetting.Id("color_theme"),
-            resources,
-            R.string.color_theme_label,
-            R.string.color_theme_desc,
+            "Color Theme",
+            "Choose the watch face color palette",
             null,
             listOf(
                 UserStyleSetting.ListUserStyleSetting.ListOption(
                     UserStyleSetting.Option.Id("gold"),
-                    resources,
-                    R.string.theme_bitcoin_gold,
-                    R.string.theme_bitcoin_gold,
+                    "Bitcoin Gold",
                     null
                 ),
                 UserStyleSetting.ListUserStyleSetting.ListOption(
                     UserStyleSetting.Option.Id("silver"),
-                    resources,
-                    R.string.theme_silver,
-                    R.string.theme_silver,
+                    "Silver",
                     null
                 ),
                 UserStyleSetting.ListUserStyleSetting.ListOption(
                     UserStyleSetting.Option.Id("green"),
-                    resources,
-                    R.string.theme_satoshi_green,
-                    R.string.theme_satoshi_green,
+                    "Satoshi Green",
                     null
                 ),
                 UserStyleSetting.ListUserStyleSetting.ListOption(
                     UserStyleSetting.Option.Id("blue"),
-                    resources,
-                    R.string.theme_ice_blue,
-                    R.string.theme_ice_blue,
+                    "Ice Blue",
                     null
                 )
             ),
@@ -74,9 +65,8 @@ class BTCWatchFaceService : WatchFaceService(), DataClient.OnDataChangedListener
 
         val showSecondsSetting = UserStyleSetting.BooleanUserStyleSetting(
             UserStyleSetting.Id("show_seconds"),
-            resources,
-            R.string.show_seconds_label,
-            R.string.show_seconds_desc,
+            "Seconds Hand",
+            "Show or hide the seconds hand",
             null,
             listOf(WatchFaceLayer.BASE),
             defaultValue = true
@@ -84,9 +74,8 @@ class BTCWatchFaceService : WatchFaceService(), DataClient.OnDataChangedListener
 
         val showPriceSetting = UserStyleSetting.BooleanUserStyleSetting(
             UserStyleSetting.Id("show_price"),
-            resources,
-            R.string.show_price_label,
-            R.string.show_price_desc,
+            "BTC Price",
+            "Show live Bitcoin price on the watch face",
             null,
             listOf(WatchFaceLayer.BASE),
             defaultValue = true
@@ -98,51 +87,8 @@ class BTCWatchFaceService : WatchFaceService(), DataClient.OnDataChangedListener
     override fun createComplicationSlotsManager(
         currentUserStyleRepository: CurrentUserStyleRepository
     ): ComplicationSlotsManager {
-        val leftSlot = ComplicationSlot.createRoundRectComplicationSlotBuilder(
-            LEFT_COMPLICATION_ID,
-            CanvasComplicationFactory { watchState, invalidateCallback ->
-                CanvasComplicationDrawable(
-                    ComplicationDrawable(this@BTCWatchFaceService),
-                    watchState,
-                    invalidateCallback
-                )
-            },
-            listOf(
-                ComplicationType.SHORT_TEXT,
-                ComplicationType.SMALL_IMAGE,
-                ComplicationType.RANGED_VALUE,
-                ComplicationType.MONOCHROMATIC_IMAGE
-            ),
-            DefaultComplicationDataSourcePolicy(
-                SystemDataSources.DATA_SOURCE_DATE,
-                ComplicationType.SHORT_TEXT
-            ),
-            ComplicationSlotBounds(RectF(0.08f, 0.38f, 0.30f, 0.62f))
-        ).setEnabled(true).build()
-
-        val rightSlot = ComplicationSlot.createRoundRectComplicationSlotBuilder(
-            RIGHT_COMPLICATION_ID,
-            CanvasComplicationFactory { watchState, invalidateCallback ->
-                CanvasComplicationDrawable(
-                    ComplicationDrawable(this@BTCWatchFaceService),
-                    watchState,
-                    invalidateCallback
-                )
-            },
-            listOf(
-                ComplicationType.SHORT_TEXT,
-                ComplicationType.SMALL_IMAGE,
-                ComplicationType.RANGED_VALUE,
-                ComplicationType.MONOCHROMATIC_IMAGE
-            ),
-            DefaultComplicationDataSourcePolicy(
-                SystemDataSources.DATA_SOURCE_STEP_COUNT,
-                ComplicationType.SHORT_TEXT
-            ),
-            ComplicationSlotBounds(RectF(0.70f, 0.38f, 0.92f, 0.62f))
-        ).setEnabled(true).build()
-
-        return ComplicationSlotsManager(listOf(leftSlot, rightSlot), currentUserStyleRepository)
+        // Complications disabled for now - keep it simple
+        return ComplicationSlotsManager(emptyList(), currentUserStyleRepository)
     }
 
     override suspend fun createWatchFace(
