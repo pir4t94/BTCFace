@@ -303,7 +303,11 @@ class BTCWatchFaceRenderer(
     }
 
     private fun applyUserStyle(userStyle: UserStyle) {
-        val colorThemeId = (userStyle["color_theme"] as? UserStyleSetting.Option)?.id?.value ?: "gold"
+        val colorThemeId = try {
+            userStyle["color_theme"].id.value
+        } catch (e: Exception) {
+            "gold"
+        }
         when (colorThemeId) {
             "silver" -> {
                 primaryColor = Color.parseColor("#C0C0C0")
