@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.*
 import android.view.SurfaceHolder
 import androidx.wear.watchface.CanvasType
+import androidx.wear.watchface.ComplicationSlotsManager
 import androidx.wear.watchface.Renderer
 import androidx.wear.watchface.WatchState
 import androidx.wear.watchface.style.CurrentUserStyleRepository
