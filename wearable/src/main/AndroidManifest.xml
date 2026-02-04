@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-feature android:name="android.hardware.type.watch" />
+    <uses-permission android:name="com.google.android.permission.PROVIDE_BACKGROUND" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_bitcoin_logo"
+        android:label="@string/app_name"
+        android:supportsRtl="true">
+
+        <!-- Watch Face Service -->
+        <service
+            android:name=".BTCWatchFaceService"
+            android:directBootAware="true"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:permission="android.permission.BIND_WALLPAPER">
+
+            <intent-filter>
+                <action android:name="android.service.wallpaper.WallpaperService" />
+                <category android:name="com.google.android.wearable.watchface.category.WATCH_FACE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="com.google.android.wearable.watchface.preview"
+                android:resource="@drawable/preview_btcface" />
+
+            <meta-data
+                android:name="com.google.android.wearable.watchface.preview_circular"
+                android:resource="@drawable/preview_btcface" />
+
+            <meta-data
+                android:name="android.service.wallpaper"
+                android:resource="@xml/watch_face_info" />
+
+            <meta-data
+                android:name="com.google.android.wearable.watchface.wristGestureCategory"
+                android:value="1" />
+        </service>
+
+    </application>
+
+</manifest>

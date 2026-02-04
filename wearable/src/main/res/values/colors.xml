@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Bitcoin Gold Theme (default) -->
+    <color name="primary">#F7931A</color>
+    <color name="secondary">#FFD700</color>
+    <color name="accent">#FFAA00</color>
+    <color name="bg_center">#0E0E18</color>
+    <color name="bg_edge">#06060C</color>
+    <color name="logo_tint">#1A1510</color>
+    <color name="price_text">#FFD700</color>
+    <color name="primary_ambient">#FFFFFF</color>
+
+    <!-- Theme variants -->
+    <color name="silver_primary">#C0C0C0</color>
+    <color name="silver_secondary">#E8E8E8</color>
+    <color name="green_primary">#00E676</color>
+    <color name="green_secondary">#76FF03</color>
+    <color name="blue_primary">#40C4FF</color>
+    <color name="blue_secondary">#80D8FF</color>
+</resources>

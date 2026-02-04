@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BTCFace</string>
+
+    <!-- Style settings -->
+    <string name="color_theme_label">Color Theme</string>
+    <string name="color_theme_desc">Choose the watch face color palette</string>
+    <string name="theme_bitcoin_gold">Bitcoin Gold</string>
+    <string name="theme_silver">Silver</string>
+    <string name="theme_satoshi_green">Satoshi Green</string>
+    <string name="theme_ice_blue">Ice Blue</string>
+
+    <string name="show_seconds_label">Seconds Hand</string>
+    <string name="show_seconds_desc">Show or hide the seconds hand</string>
+
+    <string name="show_price_label">BTC Price</string>
+    <string name="show_price_desc">Show live Bitcoin price on the watch face</string>
+</resources>

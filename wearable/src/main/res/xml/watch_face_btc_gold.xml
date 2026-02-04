@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- WFF Watch Face Format - BTC Gold Theme -->
+<WatchFace xmlns="http://schemas.android.com/wear/watchface/2.0">
+
+    <!-- Background with gradient effect -->
+    <Group id="background">
+        <Rect
+            id="background_rect"
+            width="100%"
+            height="100%"
+            fillColor="@color/bg_center" />
+    </Group>
+
+    <!-- Bitcoin logo watermark (subtle background) -->
+    <Group id="logo_layer">
+        <ImageView
+            id="btc_logo"
+            width="200"
+            height="200"
+            x="50%"
+            y="50%"
+            pivotX="100"
+            pivotY="100"
+            rotation="14"
+            tint="@color/logo_tint"
+            opacity="0.15"
+            src="@drawable/ic_bitcoin_logo" />
+    </Group>
+
+    <!-- Hour markers -->
+    <Group id="hour_markers">
+        <!-- 12 o'clock -->
+        <Rect
+            x="50%"
+            y="5%"
+            width="2dp"
+            height="12dp"
+            pivotX="1dp"
+            pivotY="0"
+            fillColor="@color/primary" />
+        <!-- 3 o'clock -->
+        <Rect
+            x="95%"
+            y="50%"
+            width="12dp"
+            height="2dp"
+            pivotX="0"
+            pivotY="1dp"
+            fillColor="@color/primary" />
+        <!-- 6 o'clock -->
+        <Rect
+            x="50%"
+            y="95%"
+            width="2dp"
+            height="12dp"
+            pivotX="1dp"
+            pivotY="0"
+            fillColor="@color/primary" />
+        <!-- 9 o'clock -->
+        <Rect
+            x="5%"
+            y="50%"
+            width="12dp"
+            height="2dp"
+            pivotX="0"
+            pivotY="1dp"
+            fillColor="@color/primary" />
+    </Group>
+
+    <!-- Hour hand -->
+    <Hand
+        id="hour"
+        x="50%"
+        y="50%"
+        width="6dp"
+        height="35%"
+        fillColor="@color/primary"
+        length="35%"
+        strokeWidth="6dp"
+        strokeLineCap="round"
+        pivotX="3dp"
+        pivotY="0"
+        rotation="[HOUR_OF_12]*30" />
+
+    <!-- Minute hand -->
+    <Hand
+        id="minute"
+        x="50%"
+        y="50%"
+        width="4dp"
+        height="45%"
+        fillColor="@color/secondary"
+        length="45%"
+        strokeWidth="4dp"
+        strokeLineCap="round"
+        pivotX="2dp"
+        pivotY="0"
+        rotation="[MINUTE_OF_HOUR]*6" />
+
+    <!-- Seconds hand -->
+    <Hand
+        id="second"
+        x="50%"
+        y="50%"
+        width="2dp"
+        height="50%"
+        fillColor="@color/accent"
+        length="50%"
+        strokeWidth="2dp"
+        strokeLineCap="round"
+        pivotX="1dp"
+        pivotY="0"
+        rotation="[SECOND_OF_MINUTE]*6" />
+
+    <!-- Center dot -->
+    <Circle
+        id="center_dot"
+        x="50%"
+        y="50%"
+        radius="4dp"
+        fillColor="@color/primary" />
+
+    <!-- BTC Price display window (6 o'clock position) -->
+    <Group id="price_window">
+        <Rect
+            id="price_bg"
+            x="25%"
+            y="75%"
+            width="50%"
+            height="18%"
+            fillColor="@color/bg_center"
+            strokeColor="@color/primary"
+            strokeWidth="1dp"
+            cornerRadius="4dp" />
+        
+        <Text
+            id="price_label"
+            x="50%"
+            y="79%"
+            fontSize="10sp"
+            fontWeight="normal"
+            fillColor="@color/secondary"
+            text="BTC Price"
+            textAlign="center" />
+        
+        <Text
+            id="price_value"
+            x="50%"
+            y="87%"
+            fontSize="14sp"
+            fontWeight="bold"
+            fillColor="@color/price_text"
+            text="$0.00"
+            textAlign="center" />
+    </Group>
+
+    <!-- Complication slots -->
+    <!-- Left complication (9 o'clock) -->
+    <ComplicationSlot
+        id="left_complication"
+        x="10%"
+        y="50%"
+        width="20%"
+        height="20%"
+        complicationTypes="SHORT_TEXT,SMALL_IMAGE,RANGED_VALUE,MONOCHROMATIC_IMAGE"
+        defaultDataProvider="android.system.DATE"
+        defaultComplicationType="SHORT_TEXT" />
+
+    <!-- Right complication (3 o'clock) -->
+    <ComplicationSlot
+        id="right_complication"
+        x="70%"
+        y="50%"
+        width="20%"
+        height="20%"
+        complicationTypes="SHORT_TEXT,SMALL_IMAGE,RANGED_VALUE,MONOCHROMATIC_IMAGE"
+        defaultDataProvider="android.system.STEP_COUNT"
+        defaultComplicationType="SHORT_TEXT" />
+
+    <!-- Ambient mode styling (OLED-friendly) -->
+    <Style id="ambient_mode">
+        <PropertyOverride>
+            <Property name="fillColor" value="@color/primary_ambient" />
+            <Property name="opacity" value="0.5" />
+        </PropertyOverride>
+    </Style>
+
+</WatchFace>

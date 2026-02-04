@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="Sync Settings"
+        android:key="sync_settings">
+
+        <ListPreference
+            android:key="sync_interval"
+            android:title="Sync Interval"
+            android:summary="How often to fetch BTC price from API"
+            android:entries="@array/sync_interval_labels"
+            android:entryValues="@array/sync_interval_values"
+            android:defaultValue="15" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="Watch Face"
+        android:key="watchface_settings">
+
+        <Preference
+            android:title="Theme"
+            android:summary="Change watch face color theme"
+            android:key="theme_info" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

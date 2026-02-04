@@ -17,3 +17,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "BTCFace"
 include(":app")
+include(":wearable")
