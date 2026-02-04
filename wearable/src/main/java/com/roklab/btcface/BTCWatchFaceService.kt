@@ -3,12 +3,10 @@ package com.roklab.btcface
 import android.graphics.RectF
 import android.view.SurfaceHolder
 import androidx.wear.watchface.ComplicationSlotsManager
-import androidx.wear.watchface.SurfaceHolder
 import androidx.wear.watchface.WatchFace
 import androidx.wear.watchface.WatchFaceService
 import androidx.wear.watchface.WatchFaceType
 import androidx.wear.watchface.WatchState
-import androidx.wear.watchface.style.WatchFaceLayer
 import androidx.wear.watchface.complications.CanvasComplicationFactory
 import androidx.wear.watchface.complications.ComplicationSlot
 import androidx.wear.watchface.complications.ComplicationSlotBounds
