@@ -3,7 +3,8 @@ package com.roklab.btcface
 import android.content.Context
 import android.graphics.*
 import android.view.SurfaceHolder
-import androidx.wear.watchface.*
+import androidx.wear.watchface.Renderer
+import androidx.wear.watchface.WatchState
 import androidx.wear.watchface.style.CurrentUserStyleRepository
 import androidx.wear.watchface.style.UserStyle
 import androidx.wear.watchface.style.UserStyleSetting
@@ -116,9 +117,7 @@ class BTCWatchFaceRenderer(
         canvas: Canvas,
         bounds: Rect,
         zonedDateTime: ZonedDateTime,
-        uid: String,
-        complications: Map<Int, ComplicationData>,
-        renderParameters: RenderParameters
+        sharedAssets: Assets
     ) {
         // Not needed for this watch face
     }
@@ -127,12 +126,9 @@ class BTCWatchFaceRenderer(
         canvas: Canvas,
         bounds: Rect,
         zonedDateTime: ZonedDateTime,
-        uid: String,
-        complications: Map<Int, ComplicationData>,
-        renderParameters: RenderParameters
+        sharedAssets: Assets
     ) {
-        val isAmbientMode = renderParameters.watchFaceLayer == WatchFaceLayer.BASE &&
-                renderParameters.drawMode == DrawMode.AMBIENT
+        val isAmbientMode = !watchState.isInteractive.value
 
         val centerX = bounds.exactCenterX()
         val centerY = bounds.exactCenterY()
@@ -162,9 +158,6 @@ class BTCWatchFaceRenderer(
         if (showPrice) {
             drawPriceWindow(canvas, centerX, centerY, radius, isAmbientMode)
         }
-
-        // Draw complications
-        complicationSlotsManager.renderComplications(canvas, zonedDateTime, renderParameters)
     }
 
     private fun drawBackground(canvas: Canvas, bounds: Rect, isAmbientMode: Boolean) {

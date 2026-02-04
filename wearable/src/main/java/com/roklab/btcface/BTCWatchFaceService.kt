@@ -16,6 +16,7 @@ import androidx.wear.watchface.style.WatchFaceLayer
 import com.google.android.gms.wearable.DataClient
 import com.google.android.gms.wearable.DataEvent
 import com.google.android.gms.wearable.DataEventBuffer
+import com.google.android.gms.wearable.DataMapItem
 import com.google.android.gms.wearable.Wearable
 
 class BTCWatchFaceService : WatchFaceService(), DataClient.OnDataChangedListener {
@@ -158,8 +159,8 @@ class BTCWatchFaceService : WatchFaceService(), DataClient.OnDataChangedListener
         dataEventBuffer.forEach { event: DataEvent ->
             if (event.type == DataEvent.TYPE_CHANGED) {
                 val item = event.dataItem
-                if (item.uri.path.compareTo("/btc_price") == 0) {
-                    val dataMap = item.data
+                if (item.uri?.path == "/btc_price") {
+                    val dataMap = DataMapItem.fromDataItem(item).dataMap
                     val price = dataMap.getDouble("price", 0.0)
                     val formatted = dataMap.getString("price_formatted") ?: "$0.00"
                     val timestamp = dataMap.getLong("timestamp", System.currentTimeMillis())
@@ -168,15 +169,5 @@ class BTCWatchFaceService : WatchFaceService(), DataClient.OnDataChangedListener
                 }
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Wearable.getDataClient(this).addListener(this)
-    }
-
-    override fun onPause() {
-        Wearable.getDataClient(this).removeListener(this)
-        super.onPause()
     }
 }

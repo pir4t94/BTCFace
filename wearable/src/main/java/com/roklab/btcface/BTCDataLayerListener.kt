@@ -4,6 +4,8 @@ import android.content.Context
 import com.google.android.gms.tasks.Tasks
 import com.google.android.gms.wearable.DataClient
 import com.google.android.gms.wearable.DataEventBuffer
+import com.google.android.gms.wearable.DataMap
+import com.google.android.gms.wearable.DataMapItem
 import com.google.android.gms.wearable.Wearable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -23,8 +25,8 @@ object BTCDataLayerListener {
             val dataItems = Tasks.await(task)
             
             for (item in dataItems) {
-                if (item.uri.path.compareTo(BTC_PRICE_PATH) == 0) {
-                    val dataMap = item.data
+                if (item.uri?.path == BTC_PRICE_PATH) {
+                    val dataMap = DataMapItem.fromDataItem(item).dataMap
                     val price = dataMap.getDouble(KEY_PRICE, 0.0)
                     val formatted = dataMap.getString(KEY_PRICE_FORMATTED) ?: "$0.00"
                     val timestamp = dataMap.getLong(KEY_TIMESTAMP, System.currentTimeMillis())
