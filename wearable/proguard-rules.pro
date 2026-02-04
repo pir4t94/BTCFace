@@ -1,16 +1,17 @@
-# ProGuard rules for BTCFace Phone Companion App
+# ProGuard rules for BTCFace Watch Face App
 
-# Keep app classes
+# Keep watch face classes
 -keep class com.roklab.btcface.** { *; }
 
-# WorkManager
--keep class androidx.work.** { *; }
+# Wear OS WatchFace
+-keep class androidx.wear.watchface.** { *; }
+-keep class androidx.wear.complications.** { *; }
 -keepclasseswithmembers class * {
-    @androidx.work.WorkerInject <init>(...);
+    @androidx.wear.watchface.** <methods>;
 }
 
 # Google Play Services (Wearable)
--keep class com.google.android.gms.** { *; }
+-keep class com.google.android.gms.wearable.** { *; }
 -dontwarn com.google.android.gms.**
 
 # Coroutines
@@ -27,12 +28,6 @@
     *;
 }
 
-# JSON parsing
--keep class org.json.** { *; }
-
-# Preferences
--keep class androidx.preference.** { *; }
-
 # Keep runtime visible annotations
 -keepattributes RuntimeVisibleAnnotations
 -keepattributes *Annotation*
@@ -40,3 +35,6 @@
 # Keep source file names and line numbers for crashes
 -keepattributes SourceFile,LineNumberTable
 -renamesourcefileattribute SourceFile
+
+# Keep lifecycle callbacks
+-keep class androidx.lifecycle.** { *; }
