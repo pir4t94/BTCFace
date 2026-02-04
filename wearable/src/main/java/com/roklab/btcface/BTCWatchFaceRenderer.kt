@@ -100,7 +100,8 @@ class BTCWatchFaceRenderer(
         color = Color.WHITE
     }
 
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+    private val supervisorJob = SupervisorJob()
+    private val scope = CoroutineScope(supervisorJob + Dispatchers.Main.immediate)
 
     init {
         scope.launch {
@@ -111,8 +112,12 @@ class BTCWatchFaceRenderer(
     }
 
     override fun onDestroy() {
-        scope.cancel()
+        supervisorJob.cancel()
         super.onDestroy()
+    }
+
+    override suspend fun createSharedAssets(): Assets {
+        return Assets()
     }
 
     override fun renderHighlightLayer(
@@ -130,7 +135,7 @@ class BTCWatchFaceRenderer(
         zonedDateTime: ZonedDateTime,
         sharedAssets: Assets
     ) {
-        val isAmbientMode = !watchState.isInteractive.value
+        val isAmbientMode = false
 
         val centerX = bounds.exactCenterX()
         val centerY = bounds.exactCenterY()
