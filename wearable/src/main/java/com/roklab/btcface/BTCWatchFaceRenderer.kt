@@ -3,6 +3,7 @@ package com.roklab.btcface
 import android.content.Context
 import android.graphics.*
 import android.view.SurfaceHolder
+import androidx.wear.watchface.CanvasType
 import androidx.wear.watchface.Renderer
 import androidx.wear.watchface.WatchState
 import androidx.wear.watchface.style.CurrentUserStyleRepository
