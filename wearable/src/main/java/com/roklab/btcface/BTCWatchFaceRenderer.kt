@@ -303,11 +303,25 @@ class BTCWatchFaceRenderer(
 
     private fun applyUserStyle(userStyle: UserStyle) {
         // Get color theme
-        val colorThemeOption = userStyle[UserStyleSetting.Id("color_theme")]
-        val colorThemeId = if (colorThemeOption is UserStyleSetting.ListUserStyleSetting.ListOption) {
-            colorThemeOption.id.value.toString()
-        } else {
-            "gold"
+        var colorThemeId = "gold"
+        for ((setting, option) in userStyle) {
+            when (setting.id.value) {
+                "color_theme" -> {
+                    if (option is UserStyleSetting.ListUserStyleSetting.ListOption) {
+                        colorThemeId = option.id.value.toString()
+                    }
+                }
+                "show_seconds" -> {
+                    if (option is UserStyleSetting.BooleanUserStyleSetting.BooleanOption) {
+                        showSeconds = option.value
+                    }
+                }
+                "show_price" -> {
+                    if (option is UserStyleSetting.BooleanUserStyleSetting.BooleanOption) {
+                        showPrice = option.value
+                    }
+                }
+            }
         }
         
         when (colorThemeId) {
@@ -339,22 +353,6 @@ class BTCWatchFaceRenderer(
                 priceTextColor = Color.parseColor("#FFD700")
                 logoTintColor = Color.parseColor("#1A1510")
             }
-        }
-
-        // Get show_seconds setting
-        val showSecondsOption = userStyle[UserStyleSetting.Id("show_seconds")]
-        showSeconds = if (showSecondsOption is UserStyleSetting.BooleanUserStyleSetting.BooleanOption) {
-            showSecondsOption.value
-        } else {
-            true
-        }
-
-        // Get show_price setting
-        val showPriceOption = userStyle[UserStyleSetting.Id("show_price")]
-        showPrice = if (showPriceOption is UserStyleSetting.BooleanUserStyleSetting.BooleanOption) {
-            showPriceOption.value
-        } else {
-            true
         }
 
         // Update paint colors

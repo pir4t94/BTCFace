@@ -50,28 +50,37 @@ class BTCWatchFaceService : WatchFaceService(), DataClient.OnDataChangedListener
     override fun createUserStyleSchema(): UserStyleSchema {
         val colorThemeSetting = UserStyleSetting.ListUserStyleSetting(
             UserStyleSetting.Id("color_theme"),
-            "Color Theme",
-            "Choose the watch face color palette",
+            resources,
+            R.string.color_theme_label,
+            R.string.color_theme_desc,
             null,
             listOf(
                 UserStyleSetting.ListUserStyleSetting.ListOption(
                     UserStyleSetting.Option.Id("gold"),
-                    "Bitcoin Gold",
+                    resources,
+                    R.string.theme_bitcoin_gold,
+                    R.string.theme_bitcoin_gold,
                     null
                 ),
                 UserStyleSetting.ListUserStyleSetting.ListOption(
                     UserStyleSetting.Option.Id("silver"),
-                    "Silver",
+                    resources,
+                    R.string.theme_silver,
+                    R.string.theme_silver,
                     null
                 ),
                 UserStyleSetting.ListUserStyleSetting.ListOption(
                     UserStyleSetting.Option.Id("green"),
-                    "Satoshi Green",
+                    resources,
+                    R.string.theme_satoshi_green,
+                    R.string.theme_satoshi_green,
                     null
                 ),
                 UserStyleSetting.ListUserStyleSetting.ListOption(
                     UserStyleSetting.Option.Id("blue"),
-                    "Ice Blue",
+                    resources,
+                    R.string.theme_ice_blue,
+                    R.string.theme_ice_blue,
                     null
                 )
             ),
@@ -80,8 +89,9 @@ class BTCWatchFaceService : WatchFaceService(), DataClient.OnDataChangedListener
 
         val showSecondsSetting = UserStyleSetting.BooleanUserStyleSetting(
             UserStyleSetting.Id("show_seconds"),
-            "Seconds Hand",
-            "Show or hide the seconds hand",
+            resources,
+            R.string.show_seconds_label,
+            R.string.show_seconds_desc,
             null,
             listOf(WatchFaceLayer.BASE),
             defaultValue = true
@@ -89,8 +99,9 @@ class BTCWatchFaceService : WatchFaceService(), DataClient.OnDataChangedListener
 
         val showPriceSetting = UserStyleSetting.BooleanUserStyleSetting(
             UserStyleSetting.Id("show_price"),
-            "BTC Price",
-            "Show live Bitcoin price on the watch face",
+            resources,
+            R.string.show_price_label,
+            R.string.show_price_desc,
             null,
             listOf(WatchFaceLayer.BASE),
             defaultValue = true
