@@ -1,42 +1,25 @@
-# ProGuard rules for BTCFace Phone Companion App
+# BTCFace Phone Companion - ProGuard Rules
 
-# Keep app classes
--keep class com.roklab.btcface.** { *; }
-
-# WorkManager
--keep class androidx.work.** { *; }
--keepclasseswithmembers class * {
-    @androidx.work.WorkerInject <init>(...);
+# Keep WorkManager worker classes
+-keep class * extends androidx.work.Worker
+-keep class * extends androidx.work.CoroutineWorker
+-keep class * extends androidx.work.ListenableWorker {
+    public <init>(android.content.Context, androidx.work.WorkerParameters);
 }
 
-# Google Play Services (Wearable)
--keep class com.google.android.gms.** { *; }
--dontwarn com.google.android.gms.**
+# Keep Google Play Services Wearable
+-keep class com.google.android.gms.wearable.** { *; }
+-dontwarn com.google.android.gms.wearable.**
 
-# Coroutines
--keepclassmembers class kotlinx.coroutines.internal.MainDispatcherFactory {
-    *;
-}
+# Keep data classes
+-keep class com.roklab.btcface.model.** { *; }
 
--keepclassmembers class kotlinx.coroutines.scheduling.DefaultScheduler {
-    *;
-}
+# Keep Kotlin coroutines
+-keepnames class kotlinx.coroutines.** { *; }
+-dontwarn kotlinx.coroutines.**
 
-# Kotlin
--keepclassmembers class kotlin.Metadata {
-    *;
-}
-
-# JSON parsing
--keep class org.json.** { *; }
-
-# Preferences
+# Keep Preferences
 -keep class androidx.preference.** { *; }
 
-# Keep runtime visible annotations
--keepattributes RuntimeVisibleAnnotations
--keepattributes *Annotation*
-
-# Keep source file names and line numbers for crashes
--keepattributes SourceFile,LineNumberTable
--renamesourcefileattribute SourceFile
+# Keep JSON parsing
+-keep class org.json.** { *; }

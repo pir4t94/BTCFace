@@ -54,6 +54,28 @@ class BTCPriceSyncWorker(
                 )
         }
 
+        fun reschedule(context: Context, intervalMinutes: Int) {
+            val constraints = Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.CONNECTED)
+                .build()
+
+            val request = PeriodicWorkRequestBuilder<BTCPriceSyncWorker>(
+                intervalMinutes.toLong(), TimeUnit.MINUTES
+            )
+                .setConstraints(constraints)
+                .setBackoffCriteria(BackoffPolicy.EXPONENTIAL, 5, TimeUnit.MINUTES)
+                .addTag(WORK_TAG)
+                .build()
+
+            // Use REPLACE to update the existing work with new interval
+            WorkManager.getInstance(context)
+                .enqueueUniquePeriodicWork(
+                    WORK_TAG,
+                    ExistingPeriodicWorkPolicy.REPLACE,
+                    request
+                )
+        }
+
         fun cancel(context: Context) {
             WorkManager.getInstance(context).cancelAllWorkByTag(WORK_TAG)
         }

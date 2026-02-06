@@ -30,9 +30,8 @@ class SettingsActivity : AppCompatActivity() {
                     val intervalMin = (newValue as String).toIntOrNull() 
                         ?: BTCPriceSyncWorker.DEFAULT_SYNC_INTERVAL_MIN
                     
-                    // Reschedule with new interval
-                    BTCPriceSyncWorker.cancel(requireContext())
-                    BTCPriceSyncWorker.schedule(requireContext(), intervalMin)
+                    // Reschedule with new interval (uses REPLACE policy)
+                    BTCPriceSyncWorker.reschedule(requireContext(), intervalMin)
                     true
                 }
             }

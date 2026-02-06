@@ -15,12 +15,36 @@ import com.google.android.gms.wearable.DataEvent
 import com.google.android.gms.wearable.DataEventBuffer
 import com.google.android.gms.wearable.DataMapItem
 import com.google.android.gms.wearable.Wearable
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
 
 class BTCWatchFaceService : WatchFaceService(), DataClient.OnDataChangedListener {
 
     companion object {
         const val LEFT_COMPLICATION_ID = 100
         const val RIGHT_COMPLICATION_ID = 101
+        private const val BTC_PRICE_PATH = "/btc_price"
+    }
+
+    private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+    private var renderer: BTCWatchFaceRenderer? = null
+
+    override fun onCreate() {
+        super.onCreate()
+        // Register for Data Layer updates
+        Wearable.getDataClient(this).addListener(this)
+        
+        // Fetch any existing cached price on startup
+        serviceScope.launch {
+            BTCDataLayerListener.listenForPriceUpdates(this@BTCWatchFaceService)
+        }
+    }
+
+    override fun onDestroy() {
+        Wearable.getDataClient(this).removeListener(this)
+        super.onDestroy()
     }
 
     override fun createUserStyleSchema(): UserStyleSchema {
@@ -88,29 +112,33 @@ class BTCWatchFaceService : WatchFaceService(), DataClient.OnDataChangedListener
         complicationSlotsManager: ComplicationSlotsManager,
         currentUserStyleRepository: CurrentUserStyleRepository
     ): WatchFace {
-        val renderer = BTCWatchFaceRenderer(
+        renderer = BTCWatchFaceRenderer(
             context = applicationContext,
             surfaceHolder = surfaceHolder,
             watchState = watchState,
             complicationSlotsManager = complicationSlotsManager,
             currentUserStyleRepository = currentUserStyleRepository
         )
-        return WatchFace(WatchFaceType.ANALOG, renderer)
+        return WatchFace(WatchFaceType.ANALOG, renderer!!)
     }
 
     override fun onDataChanged(dataEventBuffer: DataEventBuffer) {
         dataEventBuffer.forEach { event: DataEvent ->
             if (event.type == DataEvent.TYPE_CHANGED) {
                 val item = event.dataItem
-                if (item.uri?.path == "/btc_price") {
+                if (item.uri?.path == BTC_PRICE_PATH) {
                     val dataMap = DataMapItem.fromDataItem(item).dataMap
                     val price = dataMap.getDouble("price", 0.0)
                     val formatted = dataMap.getString("price_formatted") ?: "$0.00"
                     val timestamp = dataMap.getLong("timestamp", System.currentTimeMillis())
                     
                     BTCDataLayerListener.cachePrice(this, price, formatted, timestamp)
+                    
+                    // Notify renderer to refresh
+                    renderer?.onPriceUpdated()
                 }
             }
         }
+        dataEventBuffer.release()
     }
 }

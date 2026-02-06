@@ -1,40 +1,24 @@
-# ProGuard rules for BTCFace Watch Face App
+# BTCFace Wearable - ProGuard Rules
 
-# Keep watch face classes
--keep class com.roklab.btcface.** { *; }
+# Keep Watch Face Service
+-keep class * extends androidx.wear.watchface.WatchFaceService { *; }
 
-# Wear OS WatchFace
--keep class androidx.wear.watchface.** { *; }
--keep class androidx.wear.complications.** { *; }
--keepclasseswithmembers class * {
-    @androidx.wear.watchface.** <methods>;
-}
+# Keep Watch Face Renderer
+-keep class * extends androidx.wear.watchface.Renderer { *; }
 
-# Google Play Services (Wearable)
+# Keep User Style classes
+-keep class androidx.wear.watchface.style.** { *; }
+
+# Keep Complication classes
+-keep class androidx.wear.watchface.complications.** { *; }
+
+# Keep Google Play Services Wearable
 -keep class com.google.android.gms.wearable.** { *; }
--dontwarn com.google.android.gms.**
+-dontwarn com.google.android.gms.wearable.**
 
-# Coroutines
--keepclassmembers class kotlinx.coroutines.internal.MainDispatcherFactory {
-    *;
-}
+# Keep Kotlin coroutines
+-keepnames class kotlinx.coroutines.** { *; }
+-dontwarn kotlinx.coroutines.**
 
--keepclassmembers class kotlinx.coroutines.scheduling.DefaultScheduler {
-    *;
-}
-
-# Kotlin
--keepclassmembers class kotlin.Metadata {
-    *;
-}
-
-# Keep runtime visible annotations
--keepattributes RuntimeVisibleAnnotations
--keepattributes *Annotation*
-
-# Keep source file names and line numbers for crashes
--keepattributes SourceFile,LineNumberTable
--renamesourcefileattribute SourceFile
-
-# Keep lifecycle callbacks
--keep class androidx.lifecycle.** { *; }
+# Keep SharedAssets inner class
+-keep class com.roklab.btcface.BTCWatchFaceRenderer$Assets { *; }

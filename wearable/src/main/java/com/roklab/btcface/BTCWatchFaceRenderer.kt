@@ -5,6 +5,7 @@ import android.graphics.*
 import android.view.SurfaceHolder
 import androidx.wear.watchface.CanvasType
 import androidx.wear.watchface.ComplicationSlotsManager
+import androidx.wear.watchface.DrawMode
 import androidx.wear.watchface.Renderer
 import androidx.wear.watchface.WatchState
 import androidx.wear.watchface.style.CurrentUserStyleRepository
@@ -14,9 +15,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
-import java.text.NumberFormat
 import java.time.ZonedDateTime
-import java.util.Locale
 import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.sin
@@ -135,7 +134,7 @@ class BTCWatchFaceRenderer(
         zonedDateTime: ZonedDateTime,
         sharedAssets: Assets
     ) {
-        val isAmbientMode = false
+        val isAmbientMode = renderParameters.drawMode == DrawMode.AMBIENT
 
         val centerX = bounds.exactCenterX()
         val centerY = bounds.exactCenterY()
@@ -303,11 +302,14 @@ class BTCWatchFaceRenderer(
     }
 
     private fun applyUserStyle(userStyle: UserStyle) {
-        val colorThemeId = try {
-            userStyle["color_theme"].id.value
-        } catch (e: Exception) {
+        // Get color theme
+        val colorThemeOption = userStyle[UserStyleSetting.Id("color_theme")]
+        val colorThemeId = if (colorThemeOption is UserStyleSetting.ListUserStyleSetting.ListOption) {
+            colorThemeOption.id.value.toString()
+        } else {
             "gold"
         }
+        
         when (colorThemeId) {
             "silver" -> {
                 primaryColor = Color.parseColor("#C0C0C0")
@@ -339,10 +341,21 @@ class BTCWatchFaceRenderer(
             }
         }
 
-        val showSecondsValue = (userStyle["show_seconds"] as? Boolean) ?: true
-        val showPriceValue = (userStyle["show_price"] as? Boolean) ?: true
-        showSeconds = showSecondsValue
-        showPrice = showPriceValue
+        // Get show_seconds setting
+        val showSecondsOption = userStyle[UserStyleSetting.Id("show_seconds")]
+        showSeconds = if (showSecondsOption is UserStyleSetting.BooleanUserStyleSetting.BooleanOption) {
+            showSecondsOption.value
+        } else {
+            true
+        }
+
+        // Get show_price setting
+        val showPriceOption = userStyle[UserStyleSetting.Id("show_price")]
+        showPrice = if (showPriceOption is UserStyleSetting.BooleanUserStyleSetting.BooleanOption) {
+            showPriceOption.value
+        } else {
+            true
+        }
 
         // Update paint colors
         markerPaint.color = primaryColor
@@ -353,5 +366,13 @@ class BTCWatchFaceRenderer(
         priceWindowPaint.color = primaryColor
         priceTextPaint.color = priceTextColor
         priceLabelPaint.color = secondaryColor
+    }
+
+    /**
+     * Called by BTCWatchFaceService when a new price is received from Data Layer.
+     * Forces a redraw to show the updated price.
+     */
+    fun onPriceUpdated() {
+        invalidate()
     }
 }
