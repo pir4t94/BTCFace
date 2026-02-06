@@ -33,10 +33,7 @@ class BTCWatchFaceService : WatchFaceService(), DataClient.OnDataChangedListener
 
     override fun onCreate() {
         super.onCreate()
-        // Register for Data Layer updates
         Wearable.getDataClient(this).addListener(this)
-        
-        // Fetch any existing cached price on startup
         serviceScope.launch {
             BTCDataLayerListener.listenForPriceUpdates(this@BTCWatchFaceService)
         }
@@ -59,13 +56,11 @@ class BTCWatchFaceService : WatchFaceService(), DataClient.OnDataChangedListener
                     UserStyleSetting.Option.Id("gold"),
                     resources,
                     R.string.theme_bitcoin_gold,
-                    R.string.theme_bitcoin_gold,
                     null
                 ),
                 UserStyleSetting.ListUserStyleSetting.ListOption(
                     UserStyleSetting.Option.Id("silver"),
                     resources,
-                    R.string.theme_silver,
                     R.string.theme_silver,
                     null
                 ),
@@ -73,13 +68,11 @@ class BTCWatchFaceService : WatchFaceService(), DataClient.OnDataChangedListener
                     UserStyleSetting.Option.Id("green"),
                     resources,
                     R.string.theme_satoshi_green,
-                    R.string.theme_satoshi_green,
                     null
                 ),
                 UserStyleSetting.ListUserStyleSetting.ListOption(
                     UserStyleSetting.Option.Id("blue"),
                     resources,
-                    R.string.theme_ice_blue,
                     R.string.theme_ice_blue,
                     null
                 )
@@ -94,7 +87,7 @@ class BTCWatchFaceService : WatchFaceService(), DataClient.OnDataChangedListener
             R.string.show_seconds_desc,
             null,
             listOf(WatchFaceLayer.BASE),
-            defaultValue = true
+            true
         )
 
         val showPriceSetting = UserStyleSetting.BooleanUserStyleSetting(
@@ -104,7 +97,7 @@ class BTCWatchFaceService : WatchFaceService(), DataClient.OnDataChangedListener
             R.string.show_price_desc,
             null,
             listOf(WatchFaceLayer.BASE),
-            defaultValue = true
+            true
         )
 
         return UserStyleSchema(listOf(colorThemeSetting, showSecondsSetting, showPriceSetting))
@@ -113,7 +106,6 @@ class BTCWatchFaceService : WatchFaceService(), DataClient.OnDataChangedListener
     override fun createComplicationSlotsManager(
         currentUserStyleRepository: CurrentUserStyleRepository
     ): ComplicationSlotsManager {
-        // Complications disabled for now - keep it simple
         return ComplicationSlotsManager(emptyList(), currentUserStyleRepository)
     }
 
@@ -142,10 +134,7 @@ class BTCWatchFaceService : WatchFaceService(), DataClient.OnDataChangedListener
                     val price = dataMap.getDouble("price", 0.0)
                     val formatted = dataMap.getString("price_formatted") ?: "$0.00"
                     val timestamp = dataMap.getLong("timestamp", System.currentTimeMillis())
-                    
                     BTCDataLayerListener.cachePrice(this, price, formatted, timestamp)
-                    
-                    // Notify renderer to refresh
                     renderer?.onPriceUpdated()
                 }
             }

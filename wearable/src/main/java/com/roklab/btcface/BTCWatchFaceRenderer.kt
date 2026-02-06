@@ -40,13 +40,12 @@ class BTCWatchFaceRenderer(
     }
 
     // Theme colors - Bitcoin Gold (default)
-    private var primaryColor = Color.parseColor("#F7931A")     // Bitcoin Orange
-    private var secondaryColor = Color.parseColor("#FFD700")   // Gold
-    private var accentColor = Color.parseColor("#FFAA00")      // Amber
-    private var bgCenterColor = Color.parseColor("#0E0E18")    // Dark
-    private var bgEdgeColor = Color.parseColor("#06060C")      // Darker
-    private var logoTintColor = Color.parseColor("#1A1510")    // Brown tint
-    private var priceTextColor = Color.parseColor("#FFD700")   // Gold text
+    private var primaryColor = Color.parseColor("#F7931A")
+    private var secondaryColor = Color.parseColor("#FFD700")
+    private var accentColor = Color.parseColor("#FFAA00")
+    private var bgCenterColor = Color.parseColor("#0E0E18")
+    private var bgEdgeColor = Color.parseColor("#06060C")
+    private var priceTextColor = Color.parseColor("#FFD700")
 
     private var showSeconds = true
     private var showPrice = true
@@ -115,9 +114,7 @@ class BTCWatchFaceRenderer(
         super.onDestroy()
     }
 
-    override suspend fun createSharedAssets(): Assets {
-        return Assets()
-    }
+    override suspend fun createSharedAssets(): Assets = Assets()
 
     override fun renderHighlightLayer(
         canvas: Canvas,
@@ -125,7 +122,7 @@ class BTCWatchFaceRenderer(
         zonedDateTime: ZonedDateTime,
         sharedAssets: Assets
     ) {
-        // Not needed for this watch face
+        // Not needed
     }
 
     override fun render(
@@ -135,52 +132,37 @@ class BTCWatchFaceRenderer(
         sharedAssets: Assets
     ) {
         val isAmbientMode = renderParameters.drawMode == DrawMode.AMBIENT
-
         val centerX = bounds.exactCenterX()
         val centerY = bounds.exactCenterY()
         val radius = min(bounds.width(), bounds.height()) / 2f - 10f
 
-        // Draw background
         drawBackground(canvas, bounds, isAmbientMode)
-
-        // Draw hour markers
-        if (!isAmbientMode) {
-            drawMarkers(canvas, centerX, centerY, radius)
-        }
-
-        // Draw hands
+        if (!isAmbientMode) drawMarkers(canvas, centerX, centerY, radius)
         drawHands(canvas, centerX, centerY, radius, zonedDateTime, isAmbientMode)
 
-        // Draw center dot
         val centerRadius = 8f
         if (isAmbientMode) {
-            ambientOutlinePaint.apply { style = Paint.Style.STROKE; strokeWidth = 2f }
+            ambientOutlinePaint.strokeWidth = 2f
             canvas.drawCircle(centerX, centerY, centerRadius, ambientOutlinePaint)
         } else {
             canvas.drawCircle(centerX, centerY, centerRadius, centerPaint)
         }
 
-        // Draw BTC price display
-        if (showPrice) {
-            drawPriceWindow(canvas, centerX, centerY, radius, isAmbientMode)
-        }
+        if (showPrice) drawPriceWindow(canvas, centerX, centerY, radius, isAmbientMode)
     }
 
     private fun drawBackground(canvas: Canvas, bounds: Rect, isAmbientMode: Boolean) {
         if (isAmbientMode) {
             canvas.drawColor(Color.BLACK)
         } else {
-            // Gradient background effect with radial paint
-            bgPaint.apply {
-                shader = RadialGradient(
-                    bounds.exactCenterX(),
-                    bounds.exactCenterY(),
-                    min(bounds.width(), bounds.height()) / 2f,
-                    intArrayOf(bgCenterColor, bgEdgeColor),
-                    floatArrayOf(0.5f, 1f),
-                    Shader.TileMode.CLAMP
-                )
-            }
+            bgPaint.shader = RadialGradient(
+                bounds.exactCenterX(),
+                bounds.exactCenterY(),
+                min(bounds.width(), bounds.height()) / 2f,
+                intArrayOf(bgCenterColor, bgEdgeColor),
+                floatArrayOf(0.5f, 1f),
+                Shader.TileMode.CLAMP
+            )
             canvas.drawRect(bounds, bgPaint)
         }
     }
@@ -191,8 +173,6 @@ class BTCWatchFaceRenderer(
             val angle = (i * 30 - 90) * Math.PI / 180
             val x = centerX + (markerDistance * cos(angle)).toFloat()
             val y = centerY + (markerDistance * sin(angle)).toFloat()
-            
-            // Draw large marker at 12, 3, 6, 9 o'clock
             val markerSize = if (i % 3 == 0) 10f else 6f
             canvas.drawCircle(x, y, markerSize, markerPaint)
         }
@@ -210,36 +190,19 @@ class BTCWatchFaceRenderer(
         val minute = zonedDateTime.minute
         val second = zonedDateTime.second
 
-        // Hour hand
         val hourAngle = ((hour + minute / 60f) * 30 - 90) * Math.PI / 180
-        drawHand(
-            canvas, centerX, centerY,
-            (radius * 0.5).toFloat(),
-            hourAngle,
+        drawHand(canvas, centerX, centerY, (radius * 0.5f), hourAngle,
             if (isAmbientMode) ambientOutlinePaint else hourPaint,
-            if (isAmbientMode) 4f else 10f
-        )
+            if (isAmbientMode) 4f else 10f)
 
-        // Minute hand
         val minuteAngle = ((minute + second / 60f) * 6 - 90) * Math.PI / 180
-        drawHand(
-            canvas, centerX, centerY,
-            (radius * 0.7).toFloat(),
-            minuteAngle,
+        drawHand(canvas, centerX, centerY, (radius * 0.7f), minuteAngle,
             if (isAmbientMode) ambientOutlinePaint else minutePaint,
-            if (isAmbientMode) 3f else 7f
-        )
+            if (isAmbientMode) 3f else 7f)
 
-        // Second hand
         if (showSeconds && !isAmbientMode) {
             val secondAngle = (second * 6 - 90) * Math.PI / 180
-            drawHand(
-                canvas, centerX, centerY,
-                (radius * 0.8).toFloat(),
-                secondAngle,
-                secondPaint,
-                4f
-            )
+            drawHand(canvas, centerX, centerY, (radius * 0.8f), secondAngle, secondPaint, 4f)
         }
     }
 
@@ -254,7 +217,6 @@ class BTCWatchFaceRenderer(
     ) {
         val endX = centerX + (length * cos(angle)).toFloat()
         val endY = centerY + (length * sin(angle)).toFloat()
-        
         paint.strokeWidth = strokeWidth
         canvas.drawLine(centerX, centerY, endX, endY, paint)
     }
@@ -266,45 +228,31 @@ class BTCWatchFaceRenderer(
         radius: Float,
         isAmbientMode: Boolean
     ) {
-        // Price window at 6 o'clock
+        if (isAmbientMode) return
+
         val windowTop = centerY + radius - 60f
         val windowBottom = centerY + radius - 10f
         val windowLeft = centerX - 50f
         val windowRight = centerX + 50f
 
-        if (!isAmbientMode) {
-            // Draw price window background
-            canvas.drawRoundRect(
-                RectF(windowLeft, windowTop, windowRight, windowBottom),
-                8f, 8f,
-                Paint(Paint.ANTI_ALIAS_FLAG).apply {
-                    style = Paint.Style.FILL
-                    color = bgCenterColor
-                }
-            )
-            
-            // Draw border
-            canvas.drawRoundRect(
-                RectF(windowLeft, windowTop, windowRight, windowBottom),
-                8f, 8f,
-                priceWindowPaint
-            )
+        canvas.drawRoundRect(
+            RectF(windowLeft, windowTop, windowRight, windowBottom), 8f, 8f,
+            Paint(Paint.ANTI_ALIAS_FLAG).apply { style = Paint.Style.FILL; color = bgCenterColor }
+        )
+        canvas.drawRoundRect(
+            RectF(windowLeft, windowTop, windowRight, windowBottom), 8f, 8f, priceWindowPaint
+        )
 
-            // Get cached price from Data Layer
-            val priceFormatted = BTCDataLayerListener.getCachedPriceFormatted(context)
-            
-            // Draw label
-            canvas.drawText("BTC", centerX, windowTop + 18f, priceLabelPaint)
-            
-            // Draw price
-            canvas.drawText(priceFormatted, centerX, windowBottom - 8f, priceTextPaint)
-        }
+        val priceFormatted = BTCDataLayerListener.getCachedPriceFormatted(context)
+        canvas.drawText("BTC", centerX, windowTop + 18f, priceLabelPaint)
+        canvas.drawText(priceFormatted, centerX, windowBottom - 8f, priceTextPaint)
     }
 
     private fun applyUserStyle(userStyle: UserStyle) {
-        // Get color theme
         var colorThemeId = "gold"
-        for ((setting, option) in userStyle) {
+
+        // Iterate through the style map
+        userStyle.toMap().forEach { (setting, option) ->
             when (setting.id.value) {
                 "color_theme" -> {
                     if (option is UserStyleSetting.ListUserStyleSetting.ListOption) {
@@ -323,39 +271,34 @@ class BTCWatchFaceRenderer(
                 }
             }
         }
-        
+
         when (colorThemeId) {
             "silver" -> {
                 primaryColor = Color.parseColor("#C0C0C0")
                 secondaryColor = Color.parseColor("#E8E8E8")
                 accentColor = Color.parseColor("#A0A0B0")
                 priceTextColor = Color.parseColor("#E0E0E0")
-                logoTintColor = Color.parseColor("#14141A")
             }
             "green" -> {
                 primaryColor = Color.parseColor("#00E676")
                 secondaryColor = Color.parseColor("#76FF03")
                 accentColor = Color.parseColor("#00C853")
                 priceTextColor = Color.parseColor("#76FF03")
-                logoTintColor = Color.parseColor("#0C1A10")
             }
             "blue" -> {
                 primaryColor = Color.parseColor("#40C4FF")
                 secondaryColor = Color.parseColor("#80D8FF")
                 accentColor = Color.parseColor("#0091EA")
                 priceTextColor = Color.parseColor("#80D8FF")
-                logoTintColor = Color.parseColor("#0C1420")
             }
-            else -> { // gold
+            else -> {
                 primaryColor = Color.parseColor("#F7931A")
                 secondaryColor = Color.parseColor("#FFD700")
                 accentColor = Color.parseColor("#FFAA00")
                 priceTextColor = Color.parseColor("#FFD700")
-                logoTintColor = Color.parseColor("#1A1510")
             }
         }
 
-        // Update paint colors
         markerPaint.color = primaryColor
         hourPaint.color = primaryColor
         minutePaint.color = secondaryColor
@@ -366,10 +309,6 @@ class BTCWatchFaceRenderer(
         priceLabelPaint.color = secondaryColor
     }
 
-    /**
-     * Called by BTCWatchFaceService when a new price is received from Data Layer.
-     * Forces a redraw to show the updated price.
-     */
     fun onPriceUpdated() {
         invalidate()
     }
