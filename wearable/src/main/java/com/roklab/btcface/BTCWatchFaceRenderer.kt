@@ -248,25 +248,28 @@ class BTCWatchFaceRenderer(
         canvas.drawText(priceFormatted, centerX, windowBottom - 8f, priceTextPaint)
     }
 
+    @Suppress("UNCHECKED_CAST")
     private fun applyUserStyle(userStyle: UserStyle) {
+        // Get color theme - default to gold
         var colorThemeId = "gold"
-
-        // Iterate through the style map
-        userStyle.toMap().forEach { (setting, option) ->
+        
+        // Use selectedOptions which returns Map<UserStyleSetting, UserStyleSetting.Option>
+        val selectedOptions = userStyle.selectedOptions
+        for ((setting, option) in selectedOptions) {
             when (setting.id.value) {
                 "color_theme" -> {
-                    if (option is UserStyleSetting.ListUserStyleSetting.ListOption) {
-                        colorThemeId = option.id.value.toString()
+                    (option as? UserStyleSetting.ListUserStyleSetting.ListOption)?.let {
+                        colorThemeId = it.id.value.toString()
                     }
                 }
                 "show_seconds" -> {
-                    if (option is UserStyleSetting.BooleanUserStyleSetting.BooleanOption) {
-                        showSeconds = option.value
+                    (option as? UserStyleSetting.BooleanUserStyleSetting.BooleanOption)?.let {
+                        showSeconds = it.value
                     }
                 }
                 "show_price" -> {
-                    if (option is UserStyleSetting.BooleanUserStyleSetting.BooleanOption) {
-                        showPrice = option.value
+                    (option as? UserStyleSetting.BooleanUserStyleSetting.BooleanOption)?.let {
+                        showPrice = it.value
                     }
                 }
             }
