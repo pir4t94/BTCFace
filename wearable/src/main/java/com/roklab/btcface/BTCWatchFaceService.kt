@@ -1,5 +1,6 @@
 package com.roklab.btcface
 
+import com.roklab.btcface.R
 import android.view.SurfaceHolder
 import androidx.wear.watchface.ComplicationSlotsManager
 import androidx.wear.watchface.WatchFace

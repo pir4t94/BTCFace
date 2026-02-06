@@ -255,7 +255,7 @@ class BTCWatchFaceRenderer(
         
         // UserStyle implements Map<UserStyleSetting.Id, UserStyleSetting.Option>
         for ((settingId, option) in userStyle) {
-            when (settingId.value) {
+            when (settingId.toString()) {
                 "color_theme" -> {
                     (option as? UserStyleSetting.ListUserStyleSetting.ListOption)?.let {
                         colorThemeId = it.id.value.toString()
