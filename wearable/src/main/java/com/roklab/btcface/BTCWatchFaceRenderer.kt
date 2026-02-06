@@ -253,10 +253,9 @@ class BTCWatchFaceRenderer(
         // Get color theme - default to gold
         var colorThemeId = "gold"
         
-        // Use selectedOptions which returns Map<UserStyleSetting, UserStyleSetting.Option>
-        val selectedOptions = userStyle.selectedOptions
-        for ((setting, option) in selectedOptions) {
-            when (setting.id.value) {
+        // UserStyle implements Map<UserStyleSetting.Id, UserStyleSetting.Option>
+        for ((settingId, option) in userStyle) {
+            when (settingId.value) {
                 "color_theme" -> {
                     (option as? UserStyleSetting.ListUserStyleSetting.ListOption)?.let {
                         colorThemeId = it.id.value.toString()
