@@ -12,7 +12,7 @@
 
         <!-- Watch Face Service -->
         <service
-            android:name=".BTCWatchFaceService"
+            android:name="com.roklab.btcface.BTCWatchFaceService"
             android:directBootAware="true"
             android:exported="true"
             android:label="@string/app_name"
